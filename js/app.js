@@ -14,18 +14,9 @@ class Map {
         ];
         this.rowsCount = this.rowImages.length;
         this.colsCount = 7;
-
-        this.enemies = [
-            new Enemy(5, 0, 300),
-            new Enemy(5, 100, 300),
-
-            new Enemy(5, 400, 300),
-            new Enemy(5, 500, 300),
-
-        ];
     }
 
-    render(ctx) {
+    render() {
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
@@ -74,7 +65,7 @@ class Enemy extends Character {
 
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
-    update(dt, map) {
+    update(dt) {
         this.x += this.speed * dt;
         if (this.x > map.colsCount * Map.colWidth) this.x = -Map.colWidth; // Reuse enemy
     }
@@ -116,23 +107,46 @@ class Player extends Character {
         }
     }
 
-    update() {}
+    update() {
+        for (const enemy of allEnemies) {
+            if (collide(this, enemy)) {
+                console.log("Collide");
+                this.die();
+                return;
+            }
+        }
+    }
+
+    die() {
+        this.reset();
+    }
 
     get x() {
         return this.col * Map.colWidth;
     }
 
-    reset(map) {
+    reset() {
         this.row = map.rowsCount - 1;
         this.col = Math.floor(map.colsCount / 2);
     }
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+function collide(character1, character2) {
+    if (Math.abs(character1.x - character2.x) < Map.colWidth / 2
+        && Math.abs(character1.y - character2.y) < Map.rowHeight) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 const map = new Map();
 const player = new Player(map);
-const allEnemies = map.enemies;
+const allEnemies = [
+    new Enemy(5, 0, 300),
+    new Enemy(5, 100, 300),
+
+    new Enemy(5, 400, 300),
+    new Enemy(5, 500, 300),
+];
