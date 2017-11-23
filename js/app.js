@@ -108,9 +108,13 @@ class Player extends Character {
     }
 
     update() {
+        if (this.row == 0) {
+            this.win();
+            return;
+        }
+
         for (const enemy of allEnemies) {
             if (collide(this, enemy)) {
-                console.log("Collide");
                 this.die();
                 return;
             }
@@ -118,6 +122,12 @@ class Player extends Character {
     }
 
     die() {
+        console.log("You died");
+        this.reset();
+    }
+
+    win() {
+        console.log("You win!");
         this.reset();
     }
 
@@ -140,13 +150,19 @@ function collide(character1, character2) {
     }
 }
 
-
 const map = new Map();
 const player = new Player(map);
 const allEnemies = [
-    new Enemy(5, 0, 300),
-    new Enemy(5, 100, 300),
+    new Enemy(5, 0, 200),
+    new Enemy(5, 100, 200),
+    new Enemy(5, 400, 200),
+    new Enemy(5, 500, 200),
 
-    new Enemy(5, 400, 300),
-    new Enemy(5, 500, 300),
+    new Enemy(6, 100, 300),
+    new Enemy(6, 500, 300),
+
+    new Enemy(7, 100, 200),
+    new Enemy(7, 200, 200),
+    new Enemy(7, 500, 200),
+    new Enemy(7, 600, 200),
 ];
