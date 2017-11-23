@@ -18,8 +18,6 @@ var Engine = (function(global) {
    * create the canvas element, grab the 2D context for that canvas
    * set the canvas elements height/width and add it to the DOM.
    */
-  const map = new Map();
-
   const doc = global.document,
       win = global.window,
       canvas = doc.createElement('canvas'),
@@ -88,7 +86,7 @@ var Engine = (function(global) {
    * on the entities themselves within your app.js file).
    */
   function update(dt) {
-    updateEntities(dt);
+    updateEntities(dt, map);
     // checkCollisions();
   }
 
@@ -99,9 +97,9 @@ var Engine = (function(global) {
    * the data/properties related to the object. Do your drawing in your
    * render methods.
    */
-  function updateEntities(dt) {
+  function updateEntities(dt, map) {
     allEnemies.forEach(function(enemy) {
-      enemy.update(dt);
+      enemy.update(dt, map);
     });
     player.update();
   }
@@ -145,7 +143,7 @@ var Engine = (function(global) {
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
-    // noop
+    player.reset(map);
   }
 
   /* Go ahead and load all of the images we know we're going to need to

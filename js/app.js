@@ -2,15 +2,27 @@
 class Map {
     constructor() {
         this.rowImages = [
-            'images/water-block.png',   // Top row is water
-            'images/stone-block.png',   // Row 1 of 3 of stone
-            'images/stone-block.png',   // Row 2 of 3 of stone
-            'images/stone-block.png',   // Row 3 of 3 of stone
-            'images/grass-block.png',   // Row 1 of 2 of grass
-            'images/grass-block.png'    // Row 2 of 2 of grass
+            'images/grass-block.png',
+            'images/water-block.png',
+            'images/water-block.png',
+            'images/water-block.png',
+            'images/grass-block.png',
+            'images/stone-block.png',
+            'images/stone-block.png',
+            'images/stone-block.png',
+            'images/grass-block.png',
         ];
         this.rowsCount = this.rowImages.length;
-        this.colsCount = 5;
+        this.colsCount = 7;
+
+        this.enemies = [
+            new Enemy(5, 0, 300),
+            new Enemy(5, 100, 300),
+
+            new Enemy(5, 400, 300),
+            new Enemy(5, 500, 300),
+
+        ];
     }
 
     render(ctx) {
@@ -35,36 +47,44 @@ class Map {
     }
 }
 
-// Enemies our player must avoid
-class Enemy {
-    constructor(speed) {
-        this.sprite = 'images/enemy-bug.png';
-        this.x = 100;
-        this.row = 2;
-        this.speed = speed;
+// Base class for Enemy and player
+class Character {
+    constructor(sprite, initRow = 0) {
+        this.sprite = sprite;
+        this.row = initRow;
     }
 
-    // Update the enemy's position, required method for game
-    // Parameter: dt, a time delta between ticks
-    update(dt) {
-        this.x += this.speed * dt;
+    // Draw the Player or Enemy on the screen
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
     get y() {
         return this.row * Map.rowHeight - 35;
     }
+}
 
-    // Draw the enemy on the screen, required method for game
-    render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+// Enemies our player must avoid
+class Enemy extends Character {
+    constructor(startRow, startX, speed) {
+        super('images/enemy-bug.png', startRow);
+        this.x = startX;
+        this.speed = speed;
+    }
+
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+    update(dt, map) {
+        this.x += this.speed * dt;
+        if (this.x > map.colsCount * Map.colWidth) this.x = -Map.colWidth; // Reuse enemy
     }
 }
 
 // The Player class
-class Player {
-    constructor() {
-        this.sprite = "images/char-boy.png";
-        this.reset();
+class Player extends Character {
+    constructor(map) {
+        super("images/char-boy.png");
+        this.reset(map);
     }
 
     handleInput(keycode, map) {
@@ -98,28 +118,21 @@ class Player {
 
     update() {}
 
-    render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-
     get x() {
         return this.col * Map.colWidth;
     }
 
-    get y() {
-        return this.row * Map.rowHeight - 35;
-    }
-
-    reset() {
-        this.row = 5;
-        this.col = 2;
+    reset(map) {
+        this.row = map.rowsCount - 1;
+        this.col = Math.floor(map.colsCount / 2);
     }
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let allEnemies = [];
-let player = new Player();
 
-allEnemies.push(new Enemy(60));
+
+const map = new Map();
+const player = new Player(map);
+const allEnemies = map.enemies;
