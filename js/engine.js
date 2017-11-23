@@ -27,10 +27,6 @@ var Engine = (function(global) {
 
   let lastTime;
 
-  canvas.width = Map.colWidth * map.colsCount;
-  canvas.height = Map.rowHeight * map.rowsCount + 100;
-  doc.body.appendChild(canvas);
-
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
    */
@@ -66,6 +62,10 @@ var Engine = (function(global) {
    * game loop.
    */
   function init() {
+    canvas.width = Map.colWidth * map.colsCount;
+    canvas.height = Map.rowHeight * map.rowsCount + 100;
+    doc.body.appendChild(canvas);
+    
     reset();
     lastTime = Date.now();
     main();
