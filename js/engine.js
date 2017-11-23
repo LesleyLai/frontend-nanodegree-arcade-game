@@ -9,7 +9,7 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make 
+ * This engine makes the canvas' context (ctx) object globally available to make
  * writing app.js a little simpler to work with.
  */
 
@@ -19,7 +19,7 @@ var Engine = (function(global) {
    * set the canvas elements height/width and add it to the DOM.
    */
   const map = new Map();
-  
+
   const doc = global.document,
       win = global.window,
       canvas = doc.createElement('canvas'),
@@ -65,7 +65,14 @@ var Engine = (function(global) {
     canvas.width = Map.colWidth * map.colsCount;
     canvas.height = Map.rowHeight * map.rowsCount + 100;
     doc.body.appendChild(canvas);
-    
+
+    // This listens for key presses and sends the keys to your
+    // Player.handleInput() method.
+    doc.addEventListener('keyup', function(e) {
+      player.handleInput(e.keyCode, map);
+    });
+
+
     reset();
     lastTime = Date.now();
     main();
@@ -106,16 +113,17 @@ var Engine = (function(global) {
    * they are just drawing the entire screen over and over.
    */
   function render() {
-    /* This array holds the relative URL to the image used
-     * for that particular row of the game level.
-     */    
-    // Before drawing, clear existing canvas
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    clearCanvas();
 
     map.render(ctx);
 
     renderEntities();
   }
+
+  function clearCanvas() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+
 
   /* This function is called by the render function and is called on each game
    * tick. Its purpose is to then call the render functions you have defined
