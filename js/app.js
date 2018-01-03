@@ -138,12 +138,8 @@ class Player extends Character {
   }
 
   win() {
-    this.update_score();
-    this.reset();
-  }
-
-  update_score() {
     this.score += 1;
+    this.reset();
   }
 
   get x() {

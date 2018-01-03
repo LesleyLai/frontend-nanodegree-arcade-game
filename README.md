@@ -1,6 +1,14 @@
-frontend-nanodegree-arcade-game
-===============================
+# Frogger Arcade Game
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This project is an variation of the classic frogger game. The project is for udacity frontend nanodegree program.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+## Install
+If you know how to use [git](https://git-scm.com), you can clone this repository. Alternatively, you can download the ZIP files. After having the files on your local machine, open `index.html` with a modern browser.
+
+## Game play
+The goal of this game is moving your character to the upper side of the rode. You should navigate the main character to avoid bugs alone the path. If the main character collide with a bug, it will "die" and reset at its start point.
+
+Move the main character through the left/right/up/down arrow keys.
+
+## License
+This project is released to Public Domain.
